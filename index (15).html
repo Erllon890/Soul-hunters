@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Executores da soul - Hub de Executores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset CSS Básico e Configurações Globais */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Dark Theme (Padrão) */
+      --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      
+      --bg-primary: #0D1117;
+      --bg-secondary: #161B22;
+      --bg-tertiary: #21262D; 
+      
+      --text-primary: #C9D1D9;
+      --text-secondary: #8B949E;
+      --text-on-accent: #FFFFFF;
+      
+      --accent-primary: #FF3B3B;
+      --accent-primary-hover: #FF5C5C;
+      --accent-primary-active: #CC2E2E;
+
+      --border-primary: #30363D;
+      --border-secondary: #8B949E; 
+      
+      --shadow-sm: rgba(0, 0, 0, 0.15);
+      --shadow-md: rgba(0, 0, 0, 0.25);
+      --shadow-lg: rgba(0, 0, 0, 0.35);
+
+      --success-bg: #1C4D2D; 
+      --success-text: #34D058; 
+      --success-border: #2EA043;
+
+      --premium-bg: #A07B00; 
+      --premium-text: #FFD700; 
+      --premium-border: #E6B400;
+
+      /* Nova cor para Alerta de Vírus */
+      --danger-bg: #491111;
+      --danger-text: #FF6B6B;
+      --danger-border: #9B1C1C;
+
+      --border-radius-sm: 4px;
+      --border-radius-md: 8px;
+      --border-radius-lg: 12px;
+
+      --transition-speed: 0.2s;
+      --transition-ease: ease-in-out;
+
+      --top-bar-height: 60px;
+    }
+
+    body.light {
+      --bg-primary: #F6F8FA;
+      --bg-secondary: #FFFFFF;
+      --bg-tertiary: #E1E4E8; 
+      
+      --text-primary: #1F2328;
+      --text-secondary: #57606A;
+      --text-on-accent: #FFFFFF;
+      
+      --accent-primary: #E53935;
+      --accent-primary-hover: #C62828;
+      --accent-primary-active: #B71C1C;
+
+      --border-primary: #D0D7DE;
+      --border-secondary: #57606A;
+      
+      --shadow-sm: rgba(0, 0, 0, 0.05);
+      --shadow-md: rgba(0, 0, 0, 0.08);
+      --shadow-lg: rgba(0, 0, 0, 0.12);
+
+      --success-bg: #DDFFE7;
+      --success-text: #1A7F30;
+      --success-border: #87C8A0;
+
+      --premium-bg: #FFF3CD;
+      --premium-text: #B8860B;
+      --premium-border: #FFDA6E;
+
+      --danger-bg: #FFEBE9;
+      --danger-text: #D73A49;
+      --danger-border: #FFA8A8;
+    }
+
+    html {
+      font-size: 100%; 
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-family-base);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding-top: var(--top-bar-height);
+      transition: background-color var(--transition-speed) var(--transition-ease), 
+                  color var(--transition-speed) var(--transition-ease);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text-primary);
+    }
+    h1 { font-size: 2.25rem; margin-bottom: 1rem; }
+    h2 { font-size: 1.75rem; margin-bottom: 0.75rem;}
+    h3 { font-size: 1.25rem; margin-bottom: 0.5rem;}
+    p  { margin-bottom: 1rem; color: var(--text-secondary); }
+    a  { color: var(--accent-primary); text-decoration: none; transition: color var(--transition-speed) var(--transition-ease); }
+    a:hover { color: var(--accent-primary-hover); }
+
+    body::-webkit-scrollbar { width: 10px; }
+    body::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    body::-webkit-scrollbar-thumb { background-color: var(--accent-primary); border-radius: var(--border-radius-md); border: 2px solid var(--bg-secondary); }
+    body::-webkit-scrollbar-thumb:hover { background-color: var(--accent-primary-hover); }
+    body { scrollbar-width: thin; scrollbar-color: var(--accent-primary) var(--bg-secondary); }
+
+    .top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--top-bar-height);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      padding: 0 1.5rem;
+      background-color: var(--bg-primary);
+      border-bottom: 1px solid var(--border-primary);
+      transition: background-color var(--transition-speed) var(--transition-ease), 
+                  border-color var(--transition-speed) var(--transition-ease);
+    }
+    .site-title {
+      font-size: 1.5rem; 
+      font-weight: 700;
+      color: var(--accent-primary);
+      letter-spacing: -0.5px;
+    }
+    .toggle-theme-btn {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      padding: 0.5rem 1rem; 
+      border-radius: var(--border-radius-md);
+      font-size: 0.875rem; 
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color var(--transition-speed) var(--transition-ease), 
+                  color var(--transition-speed) var(--transition-ease),
+                  border-color var(--transition-speed) var(--transition-ease);
+    }
+    .toggle-theme-btn:hover {
+      background-color: var(--bg-tertiary);
+      border-color: var(--border-secondary);
+    }
+
+    .banner-wrapper {
+      position: relative;
+      width: 100%;
+      height: 350px; 
+      overflow: hidden;
+      background-color: var(--bg-secondary); 
+    }
+    .banner-wrapper .banner-image {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.3; 
+    }
+    .banner-text-content { 
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #FFFFFF; 
+      padding: 1rem;
+      width: 90%;
+      max-width: 600px;
+    }
+    .banner-text-content .profile-pic {
+      width: 110px; height: 110px;
+      object-fit: cover;
+      border-radius: 50%; 
+      display: block;
+      margin: 0 auto 1rem;
+      border: 4px solid var(--accent-primary);
+      box-shadow: 0 0 20px rgba(165, 100, 255, 0.7);
+      animation: profilePicAnim 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    @keyframes profilePicAnim {
+      from { opacity: 0; transform: scale(0.7) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .banner-text-content h2 { 
+      font-size: 2.5rem; 
+      margin-bottom: 0.5rem;
+      color: #FFFFFF;
+      font-weight: 700;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    }
+    .banner-text-content p { 
+      font-size: 1.125rem; 
+      margin-top: 0;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
+
+    .platform-filter-nav {
+      background-color: var(--bg-secondary);
+      padding: 1rem 1.5rem;
+      margin-bottom: 2.5rem; 
+      box-shadow: 0 4px 12px var(--shadow-sm);
+      position: sticky;
+      top: var(--top-bar-height);
+      z-index: 990;
+      border-bottom: 1px solid var(--border-primary);
+      transition: background-color var(--transition-speed) var(--transition-ease),
+                  border-color var(--transition-speed) var(--transition-ease);
+    }
+    .platform-filter-buttons {
+      display: flex;
+      gap: 0.75rem; 
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .platform-btn {
+      padding: 0.625rem 1.25rem; 
+      border-radius: var(--border-radius-md);
+      border: 1px solid var(--border-primary);
+      background-color: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-size: 0.9375rem; 
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-speed) var(--transition-ease);
+    }
+    .platform-btn:hover {
+      background-color: var(--accent-primary);
+      color: var(--text-on-accent);
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+    .platform-btn.active {
+      background-color: var(--accent-primary);
+      color: var(--text-on-accent);
+      border-color: var(--accent-primary);
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(165, 100, 255, 0.3);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 2rem;
+    }
+
+    .executors-grid { 
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem; 
+    }
+
+    .executor-card {
+      position: relative;
+      background-color: var(--bg-secondary);
+      border-radius: var(--border-radius-lg);
+      padding: 1.5rem; 
+      text-align: center;
+      box-shadow: 0 4px 8px var(--shadow-sm);
+      transition: transform var(--transition-speed) var(--transition-ease), 
+                  box-shadow var(--transition-speed) var(--transition-ease);
+      overflow: hidden;
+      border: 1px solid var(--border-primary);
+      display: flex;
+      flex-direction: column;
+    }
+    .executor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px var(--shadow-md);
+    }
+    .executor-card.hidden { display: none !important; }
+
+    .card-header { 
+        margin-bottom: 1rem;
+    }
+    .executor-card .executor-logo {
+      width: 72px; height: 72px;
+      object-fit: contain;
+      margin-bottom: 0.75rem;
+      border: 2px solid var(--accent-primary);
+      border-radius: var(--border-radius-md);
+      background-color: var(--bg-primary); 
+    }
+    .executor-card h3 { 
+      font-size: 1.375rem; 
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .card-badges { 
+        margin-bottom: 1rem;
+        min-height: 24px; 
+    }
+    .executor-card .description { 
+      font-size: 0.9375rem; 
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem; 
+      flex-grow: 1; 
+    }
+    .card-actions { 
+        margin-top: auto; 
+    }
+
+    .card-platform-tag { 
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background-color: var(--accent-primary);
+      color: var(--text-on-accent);
+      padding: 0.25rem 0.625rem; 
+      border-radius: var(--border-radius-sm);
+      font-size: 0.75rem; 
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      z-index: 3;
+    }
+    
+    .badge { 
+      padding: 0.375rem 0.75rem; 
+      border-radius: var(--border-radius-md);
+      font-size: 0.75rem; 
+      font-weight: 600;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid transparent;
+      animation: badgePulseAnim 2.5s infinite cubic-bezier(0.455, 0.030, 0.515, 0.955);
+    }
+    @keyframes badgePulseAnim { 
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.03); opacity: 0.9; }
+    }
+
+    .badge-premium {
+      background-color: var(--premium-bg);
+      color: var(--premium-text);
+      border-color: var(--premium-border);
+    }
+    .badge-recommended {
+      background-color: var(--success-bg);
+      color: var(--success-text);
+      border-color: var(--success-border);
+    }
+    .badge-danger {
+      background-color: var(--danger-bg);
+      color: var(--danger-text);
+      border-color: var(--danger-border);
+    }
+
+    .btn { 
+      display: inline-block;
+      padding: 0.75rem 1.5rem; 
+      background-color: var(--accent-primary);
+      color: var(--text-on-accent);
+      text-decoration: none;
+      border-radius: var(--border-radius-md);
+      transition: all var(--transition-speed) var(--transition-ease);
+      font-weight: 600;
+      font-size: 0.9375rem; 
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+    .btn:hover {
+      background-color: var(--accent-primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px var(--shadow-sm);
+    }
+    .btn:active {
+      background-color: var(--accent-primary-active);
+      transform: translateY(0);
+    }
+    .btn-stacked-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem; 
+      width: 100%; 
+      max-width: 220px; 
+      margin: 0 auto;
+    }
+    .btn-main-dl { 
+      background-color: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+    }
+    .btn-main-dl:hover {
+      background-color: var(--success-text); 
+      color: var(--success-bg);
+    }
+    .btn-vng-dl { 
+      background-color: transparent;
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+    .btn-vng-dl:hover {
+      background-color: var(--accent-primary);
+      color: var(--text-on-accent);
+    }
+    .btn-purchase-dl { 
+      background-color: var(--premium-text);
+      color: #4D3800; 
+      border: 1px solid var(--premium-border);
+    }
+    .btn-purchase-dl:hover {
+      background-color: var(--premium-border);
+    }
+
+    /* Estilo para botão de risco */
+    .btn-danger-outline {
+      background-color: transparent;
+      color: var(--danger-text);
+      border: 1px solid var(--danger-text);
+    }
+    .btn-danger-outline:hover {
+      background-color: var(--danger-text);
+      color: #fff;
+    }
+
+    .card-top-decoration { 
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-primary-hover));
+      z-index: 2;
+      border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    }
+
+    .executor-card::after { 
+      content: '';
+      position: absolute;
+      top: -50%; left: -100%; 
+      width: 50%; 
+      height: 200%;
+      background: linear-gradient(to right, 
+                  rgba(255,255,255,0) 0%, 
+                  rgba(255,255,255,0.15) 50%, 
+                  rgba(255,255,255,0) 100%);
+      transform: skewX(-25deg); 
+      z-index: 1;
+      pointer-events: none;
+      transition: left 0.7s cubic-bezier(0.23, 1, 0.32, 1); 
+    }
+    .executor-card:hover::after {
+      left: 150%; 
+    }
+
+    .discord-section {
+      text-align: center;
+      padding: 3.5rem 1.5rem; 
+      margin: 4rem 0; 
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--border-radius-lg);
+      background: url('https://cdn.discordapp.com/attachments/1311484508003893398/1374147003336097867/standard_6.gif') center/cover no-repeat;
+    }
+    .discord-card-link { 
+      background: rgba(22, 27, 34, 0.9); 
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem; 
+      padding: 1.25rem 2rem; 
+      border-radius: var(--border-radius-lg);
+      text-decoration: none;
+      backdrop-filter: blur(5px);
+      border: 2px solid var(--accent-primary);
+      transition: transform var(--transition-speed) var(--transition-ease), 
+                  box-shadow var(--transition-speed) var(--transition-ease);
+      box-shadow: 0 6px 15px var(--shadow-md);
+    }
+    .discord-card-link:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 25px var(--accent-primary-active); 
+    }
+    .discord-card-link img {
+      width: 48px; height: 48px;
+      transition: transform var(--transition-speed) var(--transition-ease);
+    }
+    .discord-card-link:hover img { transform: rotate(-10deg) scale(1.1); }
+    .discord-card-link span {
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 1.25rem; 
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .platform-notification {
+      position: fixed;
+      bottom: 1.5rem; 
+      left: 1.5rem;
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+      padding: 0.75rem 1.25rem; 
+      border-radius: var(--border-radius-md);
+      font-size: 0.9375rem; 
+      box-shadow: 0 4px 15px var(--shadow-md);
+      opacity: 0;
+      animation: notificationAnim 4s var(--transition-ease) forwards;
+      z-index: 1001;
+      pointer-events: none;
+      border: 1px solid var(--border-primary);
+    }
+    @keyframes notificationAnim {
+      0% { opacity: 0; transform: translateY(20px); }
+      15%, 85% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(20px); }
+    }
+    
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Responsividade Média (Tablets e Celulares Maiores) */
+    @media (max-width: 768px) {
+      :root { --top-bar-height: 56px; }
+      .site-title { font-size: 1.25rem; }
+      .toggle-theme-btn { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+      .banner-wrapper { height: 300px; }
+      .banner-text-content h2 { font-size: 2rem; }
+      .banner-text-content p { font-size: 1rem; }
+      .banner-text-content .profile-pic { width: 90px; height: 90px; }
+      
+      .platform-filter-nav { padding: 0.75rem 1rem; margin-bottom: 1.5rem; }
+      .platform-btn { padding: 0.5rem 1rem; font-size: 0.875rem; }
+      
+      .executors-grid { grid-template-columns: 1fr; gap: 1.5rem; } 
+      .executor-card { padding: 1.25rem; }
+      .executor-card h3 { font-size: 1.25rem; }
+      .executor-card .description { font-size: 0.875rem; min-height: 40px; margin-bottom: 1rem;}
+      .btn { padding: 0.625rem 1.25rem; font-size: 0.875rem; }
+
+      .discord-section { padding: 2.5rem 1rem; margin: 3rem 0; }
+      .discord-card-link { padding: 1rem 1.5rem; gap: 0.75rem; }
+      .discord-card-link img { width: 40px; height: 40px; }
+      .discord-card-link span { font-size: 1.125rem; }
+
+      .platform-notification { left:1rem; bottom: 1rem; font-size: 0.875rem; padding: 0.6rem 1rem; }
+    }
+
+    /* Responsividade Pequena (Celulares Menores) */
+    @media (max-width: 480px) {
+      .site-title { font-size: 1.1rem; }
+      .top-bar { padding: 0 1rem; }
+      .toggle-theme-btn { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+
+      .banner-wrapper { height: 280px; }
+      .banner-text-content h2 { font-size: 1.75rem; }
+      .banner-text-content p { font-size: 0.9rem; }
+      .banner-text-content .profile-pic { width: 80px; height: 80px; }
+
+      .platform-filter-nav { padding: 0.5rem; margin-bottom: 1rem; }
+      .platform-filter-buttons { gap: 0.5rem; }
+      .platform-btn { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+
+      .container { padding: 0 1rem 1.5rem; }
+      .executors-grid { gap: 1rem; }
+      .executor-card { padding: 1rem; }
+      .executor-card h3 { font-size: 1.1rem; }
+      .executor-card .description { font-size: 0.8rem; min-height: 30px;}
+      .btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
+      .btn-stacked-group { gap: 0.5rem; max-width: 180px; }
+
+
+      .discord-section { padding: 2rem 0.75rem; margin: 2.5rem 0; }
+      .discord-card-link { padding: 0.75rem 1.25rem; }
+      .discord-card-link span { font-size: 1rem; }
+
+      .platform-notification { font-size: 0.8rem; padding: 0.5rem 0.8rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="site-title">SoulExec</div>
+    <div class="right-section">
+      <button class="toggle-theme-btn" aria-label="Alternar tema claro e escuro">
+        Alternar Tema
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="banner-wrapper" aria-labelledby="banner-main-title">
+      <img class="banner-image" src="https://i.ibb.co/847bqMfv/standard-15.gif" alt=""/>
+      <div class="banner-text-content">
+        <img
+          class="profile-pic"
+          src="https://i.ibb.co/SGLkXrm/Untitled-design.gif"
+          alt="Soul exec"
+        />
+        <h2 id="banner-main-title">Soul Executores</h2>
+        <p>🎖️ Seu Hub Definitivo de Executores! 🎖️<br>by: adm_serio </p>
+      </div>
+    </section>
+
+    <nav class="platform-filter-nav" aria-label="Filtrar executores por plataforma">
+        <div class="platform-filter-buttons">
+          <button class="platform-btn active" data-platform-filter="" aria-pressed="true">Todas</button>
+          <button class="platform-btn" data-platform-filter="Android" aria-pressed="false">Android</button>
+          <button class="platform-btn" data-platform-filter="iOS" aria-pressed="false">iOS</button>
+          <button class="platform-btn" data-platform-filter="Windows" aria-pressed="false">Windows</button>
+        </div>
+    </nav>
+
+    <div class="container">
+      <section id="executors-section" aria-labelledby="executors-list-title">
+         <h2 id="executors-list-title" class="visually-hidden">Lista de Executores Disponíveis</h2>
+        <div class="executors-grid" id="executorList">
+          
+          <article class="executor-card" data-name="Delta" data-platform="Android">
+            <div class="card-top-decoration"></div>
+             <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://delta-executor.com/wp-content/uploads/2023/04/Delta-Executor-official-logo.webp" alt="Logotipo Delta"/>
+                <h3>Delta</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">🔥 Super Recomendado 🔥</span>
+            </div>
+            <p class="description">Executor top bem otimizado com atualizações frequentes e tem uma key simples!</p>
+            <div class="card-actions">
+                <a href="https://deltaexploits.gg/delta-executor-android" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Fluxus" data-platform="Android">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZL30j4IwPdp0Hhl9123VEmFaejJ5TjaDVfQ&usqp=CAU" alt="Logotipo Fluxus" />
+                <h3>FluxusZ</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">⚡ VELOZ ⚡</span>
+            </div>
+            <p class="description">Executor Top, recomendo!</p>
+            <div class="card-actions">
+                <div class="btn-stacked-group">
+                  <a href="https://fluxusz.com/download" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+                  <a href="https://fluxusz.com/download" class="btn btn-vng-dl" target="_blank" rel="noopener noreferrer">VNG</a>
+                </div>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Codex" data-platform="Android">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6FzTc_eLrlpPNjYuMoa_2kBs4JcMzbiGuURQO1YxZjiA6pE9Koc58FWIg&s=10" alt="Logotipo Codex" />
+                <h3>Codex</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">📚 Recomendado 📚</span>
+            </div>
+            <p class="description">Executor rápido para Android com interface amigável.</p>
+            <div class="card-actions">
+                <div class="btn-stacked-group">
+                  <a href="https://codex.lol/" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+                  <a href="https://codex.lol/" class="btn btn-vng-dl" target="_blank" rel="noopener noreferrer">VNG</a>
+                </div>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Arceus X" data-platform="Android">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq_FANfIiinyu5ccWXyA88ocVvpaOMaCiTQ3-OMXWPNzbCn4PKS0oQVVA&s=10" alt="Logotipo Arceus X Neo" />
+                <h3>Arceus X Neo</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">🇺🇲 RECOMENDADO 🇧🇷</span>
+            </div>
+            <p class="description">Executor popular de scripts para Roblox no Android.</p>
+            <div class="card-actions">
+                <div class="btn-stacked-group">
+                  <a href="https://spdmteam.com" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+                  <a href="https://vng.spdmteam.com/" class="btn btn-vng-dl" target="_blank" rel="noopener noreferrer">VNG</a>
+                </div>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Vega X" data-platform="Android">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYX9In5ZYK4Bz6tbTFUf6Y9qaqfn9GsqYbWrIVfzvALw&s" alt="Logotipo Vega X">
+                <h3>Vega X</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">💤 Key 3 dias 💤</span>
+            </div>
+            <p class="description">Executor leve e eficiente para Roblox no Android.</p>
+            <div class="card-actions">
+                <a href="https://vegax.gg/download.html" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Crypitc" data-platform="Android">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://avatars.githubusercontent.com/u/207789171?s=200&v=4" alt="Logotipo Crypitc">
+                <h3>Crypitc</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">🌜 Legal 🌜</span>
+            </div>
+            <p class="description">Executor Android moderno e com boa compatibilidade.</p>
+            <div class="card-actions">
+                <div class="btn-stacked-group">
+                  <a href="https://getcryptic.net/" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+                  <a href="https://getcryptic.net/" class="btn btn-vng-dl" target="_blank" rel="noopener noreferrer">VNG</a>
+                </div>
+            </div>
+          </article>
+          
+          <article class="executor-card" data-name="Evon" data-platform="Android">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://evon.cc/favicon.png" alt="Logotipo Evon">
+                <h3>Evon</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">✨ NOVO ✨</span>
+            </div>
+            <p class="description">Executor moderno com interface intuitiva e recursos avançados.</p>
+            <div class="card-actions">
+                <a href="https://evon.cc/android/dl-a/Evon.apk" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+            </div>
+          </article>
+          
+          <article class="executor-card" data-name="Trigon" data-platform="Android">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://cdn.discordapp.com/emojis/1207552911975129109.png?size=2048" alt="Logotipo Trigon">
+                <h3>Trigon</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">☕ Bom ☕</span>
+            </div>
+            <p class="description">Executor moderno com interface intuitiva e recursos avançados.</p>
+            <div class="card-actions">
+                <a href="https://trigonfiles.com/trigon.apk" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+                </div>
+          </article>
+
+          <article class="executor-card" data-name="Krnl" data-platform="Android">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Android</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://avatars.githubusercontent.com/u/210202191?s=200&v=4" alt="Logotipo Krnl">
+                <h3>Krnl</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">🤩RECOMENDADO🤩</span>
+            </div>
+            <p class="description">Versão Android & Android VNG | Atualizado.</p>
+            <div class="card-actions">
+                <div class="btn-stacked-group">
+                  <a href="https://stickx.top/download/Krnl.apk" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download</a>
+                  <a href="https://stickx.top/download/KrnlVNG.apk" class="btn btn-vng-dl" target="_blank" rel="noopener noreferrer">VNG</a>
+                </div>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Delta iOS" data-platform="iOS">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">iOS</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://delta-executor.com/wp-content/uploads/2023/04/Delta-Executor-official-logo.webp" alt="Logotipo Delta iOS" />
+                <h3>Delta iOS</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">📱 RECOMENDADO</span>
+            </div>
+            <p class="description">Executor para dispositivos iOS da linha Delta.</p>
+            <div class="card-actions">
+                <a href="https://deltaexploits.gg/android_dl" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download iOS</a>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Arceus X iOS" data-platform="iOS">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">iOS</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq_FANfIiinyu5ccWXyA88ocVvpaOMaCiTQ3-OMXWPNzbCn4PKS0oQVVA&s=10" alt="Logotipo Arceus X iOS" />
+                <h3>Arceus X iOS</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended">🔥 TOP IOS</span>
+            </div>
+            <p class="description">Versão iOS do executor Arceus X para Roblox.</p>
+            <div class="card-actions">
+                <a href="https://executors-samrat.vercel.app/" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download iOS</a>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Codex iOS" data-platform="iOS">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">iOS</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6FzTc_eLrlpPNjYuMoa_2kBs4JcMzbiGuURQO1YxZjiA6pE9Koc58FWIg&s=10" alt="Logotipo Codex iOS" />
+                <h3>Codex iOS</h3>
+            </div>
+                        <div class="card-badges">
+                <span class="badge badge-recommended">✅Recomendado✅</span>
+                        </div>
+            <p class="description">Executor Codex agora disponível para iOS.</p>
+            <div class="card-actions">
+                <a href="https://executors-samrat.vercel.app/" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Download iOS</a>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Wave" data-platform="Windows">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Windows</div>
+            <div class="card-header">
+              <img class="executor-logo" src="https://pbs.twimg.com/profile_images/1775946212522496000/II3o8QCb_200x200.png" alt="Logotipo Wave" />
+              <h3>Wave</h3>
+            </div>
+            <div class="card-badges">
+              <span class="badge badge-premium">Premium</span>
+              <span class="badge badge-recommended" style="margin-top:0.5rem;">RECOMENDADO</span>
+            </div>
+            <p class="description">Executor premium para PC com suporte a scripts complexos.</p>
+            <div class="card-actions">
+              <a href="https://getwave.gg/" class="btn btn-purchase-dl" target="_blank" rel="noopener noreferrer">Purchase</a>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="SubZero" data-platform="Windows">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Windows</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://cdn.wearedevs.net/images/thumbnails/SubZero-051625.webp" alt="Logotipo SubZero">
+                <h3>SubZero (Fluxo PC)</h3>
+            </div>
+            <div class="card-badges">
+            <span class="badge badge-recommended" style="margin-top:0.5rem;">🔥Fluxo pc🔥</span>
+            </div>
+            <p class="description">Versão PC do famoso executor Fluxus com interface aprimorada.</p>
+            <div class="card-actions">
+                 <a href="https://getsubz.xyz/" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Baixar</a>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Nezur" data-platform="Windows">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Windows</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://framerusercontent.com/images/JHdhIcC3tGjhFhq5d2jB104VkR4.webp" alt="Logotipo Nezur">
+                <h3>Nezur</h3>
+            </div>
+            <div class="card-badges">
+                <span class="badge badge-recommended" style="margin-top:0.5rem;">☄️Legalzin☄️</span>
+            </div>
+            <p class="description">Executor Windows estável para diversos jogos.</p>
+            <div class="card-actions">
+                <a href="https://nezur.io/" class="btn btn-main-dl" target="_blank" rel="noopener noreferrer">Instalar</a>
+            </div>
+          </article>
+
+          <article class="executor-card" data-name="Xeno" data-platform="Windows">
+            <div class="card-top-decoration"></div>
+            <div class="card-platform-tag">Windows</div>
+            <div class="card-header">
+                <img class="executor-logo" src="https://images.crunchbase.com/image/upload/c_pad,f_auto,q_auto:eco,dpr_1/ad789f5f19f8483da06d1f6a0a8ab9bc" alt="Logotipo Xeno">
+                <h3 style="color: var(--danger-text);">Xeno</h3>
+            </div>
+            <div class="card-badges">
+              <span class="badge badge-danger">⚠️ RISCO: VÍRUS ⚠️</span>
+            </div>
+            <p class="description" style="color: var(--danger-text); font-weight: 500;">AVISO: Este executor foi reportado por vírus! Use por sua conta e risco.</p>
+            <div class="card-actions">
+                <a href="https://www.xeno.onl/download" class="btn btn-danger-outline" target="_blank" rel="noopener noreferrer">Download</a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="discord-section" aria-labelledby="discord-community-heading">
+        <h2 id="discord-community-heading" class="visually-hidden">Nossa Comunidade no Discord</h2>
+        <a href="https://discord.gg/soulhunters" class="discord-card-link" target="_blank" rel="noopener noreferrer">
+          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Ícone do Discord">
+          <span>Junte-se ao Discord!</span>
+        </a>
+      </section>
+    </div>
+<p style="text-align: center;">by: adm_serio</p>
+              </main>
+               <script>
+  'use strict'; 
+
+  let allExecutorCards = [];
+  let notificationTimeoutId; 
+
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    saveThemePreference();
+  }
+
+  function saveThemePreference() {
+    const themeToSave = document.body.classList.contains('light') ? 'light' : 'dark';
+    try {
+      localStorage.setItem('serioexec_theme', themeToSave); 
+    } catch (e) {}
+  }
+
+  function loadThemePreference() {
+    try {
+      const savedTheme = localStorage.getItem('serioexec_theme'); 
+      if (savedTheme) {
+        if (savedTheme === 'light') {
+          document.body.classList.add('light');
+        }
+      } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          document.body.classList.add('light');
+        } else {
+          document.body.classList.remove('light'); 
+        }
+      }
+    } catch (e) {
+      document.body.classList.remove('light'); 
+    }
+  }
+
+    function showNotification(text) {
+      const existingNotification = document.querySelector('.platform-notification');
+      if (existingNotification) {
+        existingNotification.remove();
+        if (notificationTimeoutId) {
+             clearTimeout(notificationTimeoutId);
+        }
+      }
+
+      const notification = document.createElement('div');
+      notification.className = 'platform-notification';
+      notification.setAttribute('role', 'status'); 
+      notification.setAttribute('aria-live', 'polite'); 
+      notification.textContent = `Exibindo: ${text}`; 
+      document.body.appendChild(notification);
+      
+      void notification.offsetWidth; 
+
+      notificationTimeoutId = setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+      }, 4000); 
+    }
+    
+    function handlePlatformFilterClick(event) {
+        const platformButtons = document.querySelectorAll('.platform-btn'); 
+        platformButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
+        });
+        event.currentTarget.classList.add('active');
+        event.currentTarget.setAttribute('aria-pressed', 'true');
+        
+        const platform = event.currentTarget.dataset.platformFilter;
+        filterExecutors(platform);
+    }
+
+    function filterExecutors(platform) {
+      if (allExecutorCards.length === 0) { 
+          return;
+      }
+      showNotification(platform || "Todas");
+      allExecutorCards.forEach(card => {
+        const cardPlatform = card.dataset.platform;
+        if (!platform || cardPlatform === platform) { 
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    function init() {
+      allExecutorCards = document.querySelectorAll('.executor-card'); 
+      
+      const themeToggleButton = document.querySelector('.toggle-theme-btn'); 
+      const platformButtons = document.querySelectorAll('.platform-btn');
+      
+      if (themeToggleButton) { 
+        themeToggleButton.addEventListener('click', toggleTheme);
+      }
+      
+      if (platformButtons.length > 0) {
+        platformButtons.forEach(button => {
+          button.addEventListener('click', handlePlatformFilterClick);
+        });
+      }
+      
+      loadThemePreference(); 
+      
+      const activeButton = document.querySelector('.platform-btn.active');
+      let initialPlatformFilter = "";
+      if (activeButton && activeButton.dataset.platformFilter !== undefined) { 
+          initialPlatformFilter = activeButton.dataset.platformFilter;
+      }
+      filterExecutors(initialPlatformFilter);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+  </script>
+</body>
+</html>
